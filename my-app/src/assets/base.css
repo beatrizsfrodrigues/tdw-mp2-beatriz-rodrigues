@@ -1,0 +1,80 @@
+body {
+  background-image: url("./background.png");
+  font-family: Inter;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+  color: #f6f2e5;
+  -webkit-text-stroke-width: 1;
+  -webkit-text-stroke-color: #4d3d35;
+  padding: 32px;
+}
+
+ul {
+  list-style-type: none;
+  display: flex;
+  flex-direction: row;
+  gap: 24px;
+}
+
+.navLink {
+  background-color: #e39368;
+  width: 72px;
+  height: 72px;
+  border-radius: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.navLink a {
+  text-decoration: none;
+  text-align: center;
+  color: #f6f2e5;
+
+  -webkit-text-stroke-width: 1;
+  -webkit-text-stroke-color: #4d3d35;
+}
+
+#home {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+}
+
+#filters {
+  background-color: #f6f2e5;
+  border-radius: 56px;
+  padding: 16px;
+  display: flex;
+  flex-direction: row;
+  gap: 16px;
+}
+
+#listBoard {
+  background-color: #f6f2e5;
+  width: 60%;
+  height: 500px;
+  border-radius: 56px;
+}
+
+.filter {
+  background-color: #899bf0;
+  width: 62px;
+  height: 62px;
+  border-radius: 24px;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#all {
+  background-color: #88c68a;
+}
+
+#fav {
+  background-color: #f7a7b3;
+}
