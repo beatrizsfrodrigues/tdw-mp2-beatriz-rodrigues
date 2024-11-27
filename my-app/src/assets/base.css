@@ -53,13 +53,6 @@ ul {
   gap: 16px;
 }
 
-#listBoard {
-  background-color: #f6f2e5;
-  width: 60%;
-  height: 500px;
-  border-radius: 56px;
-}
-
 .filter {
   background-color: #899bf0;
   width: 62px;
@@ -71,10 +64,127 @@ ul {
   justify-content: center;
 }
 
+.filter:hover {
+  cursor: pointer;
+}
+
 #all {
   background-color: #88c68a;
 }
 
 #fav {
   background-color: #f7a7b3;
+}
+
+#listBoard {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  align-items: center;
+  background-color: #f6f2e5;
+  padding: 48px;
+  border-radius: 100px;
+  gap: 32px;
+}
+
+.text {
+  color: #4d3d35;
+}
+
+.villager {
+  flex-shrink: 0;
+  border-radius: 80px;
+  border: 6px solid #4d3d35;
+  background: #f6f2e5;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 16px;
+  gap: -10px;
+}
+
+.imageVillager {
+  width: 201px;
+  height: 198px;
+  flex-shrink: 0;
+  padding: 8px;
+  border-radius: 56px;
+  border: 6px solid #4d3d35;
+  object-fit: contain;
+  background-image: url("https://i.pinimg.com/736x/3d/2e/c3/3d2ec30036404eb943eefaa1e2a47409.jpg");
+  background-repeat: no-repeat;
+  background-size: 500px;
+}
+
+.iconsVillagers {
+  display: flex;
+  gap: 8px;
+}
+
+.iconVillager {
+  width: 40px;
+  height: auto;
+}
+
+.iconDiv {
+  width: 50px;
+  height: 50px;
+  border-radius: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.pink {
+  background-color: #f7a7b3;
+}
+
+.blue {
+  background-color: #899bf0;
+}
+
+.green {
+  background-color: #7fd6bb;
+}
+
+.favBtn {
+  stroke: #4d3d35;
+  width: 30px;
+  height: auto;
+}
+
+.favBtn:hover {
+  fill: #4d3d35;
+  cursor: pointer;
+}
+
+.tooltip {
+  position: relative;
+}
+
+.tooltip .tooltiptext {
+  background-color: #f6f2e5;
+  border-style: solid;
+  border-color: #4d3d35;
+  color: #4d3d35;
+  text-align: center;
+  padding: 4px 16px;
+  border-radius: 6px;
+  bottom: 48px;
+  position: absolute;
+  z-index: 1;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+.tooltip:hover .tooltiptext {
+  opacity: 1;
+}
+.tooltip .tooltiptext::after {
+  content: " ";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-left: -10px;
+  border-width: 10px;
+  border-style: solid;
+  border-color: #4d3d35 transparent transparent transparent;
 }

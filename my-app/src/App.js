@@ -1,8 +1,10 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
+// import ReactDOM from "react-dom";
 import Info from "./Info.js";
 import Home from "./Home.js";
 
+// import dotenv from "dotenv";
 // import { Provider } from "react-redux";
 
 export default function App() {
