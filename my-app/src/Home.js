@@ -18,6 +18,7 @@ import {
 } from "./redux/villagersSlice";
 import { useGetVillagersQuery } from "./services/api";
 import { Heart } from "feather-icons-react";
+import VillagerInfo from "./VillagerInfo";
 
 function Home() {
   const dispatch = useDispatch();
@@ -27,6 +28,8 @@ function Home() {
   const error = useSelector((state) => state.villagers.error);
   const [filter, setFilter] = useState("All");
   const [filteredVillagers, setFilteredVillagers] = useState([]);
+  const [selectedVillager, setSelectedVillager] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const {
     data,
     error: apiError,
@@ -51,7 +54,6 @@ function Home() {
     if (savedFavVillagers) {
       try {
         const parsedFavVillagers = JSON.parse(savedFavVillagers);
-        console.log(parsedFavVillagers);
 
         setFavoriteVillagers(parsedFavVillagers);
       } catch (error) {
@@ -59,7 +61,6 @@ function Home() {
           "Error parsing saved favorite villagers from local storage:",
           error
         );
-        // localStorage.removeItem("favVillagers");
       }
     }
   }, [dispatch]);
@@ -72,15 +73,23 @@ function Home() {
     setFilteredVillagers(getFilteredVillagers());
   }, [villagers, filter, favVillagers]);
 
-  function addFav(villager) {
-    console.log(!favVillagers);
+  function openModal(villager) {
+    setSelectedVillager(villager);
+    setIsModalOpen(true);
+  }
 
+  function closeModal() {
+    setSelectedVillager(null);
+    setIsModalOpen(false);
+  }
+
+  function addFav(villager) {
     if (
       favVillagers
         .filter((fav) => fav !== undefined)
-        .find((vil) => vil.id == villager.villager.id)
+        .find((vil) => vil.id == villager.id)
     ) {
-      dispatch(removeFavVillager(villager.villager.id));
+      dispatch(removeFavVillager(villager.id));
     } else {
       dispatch(addFavVillager(villager));
     }
@@ -96,7 +105,6 @@ function Home() {
   }
 
   function setFavoriteVillagers(favVillagers) {
-    console.log(favVillagers);
     favVillagers.forEach((villager) => {
       dispatch(addFavVillager(villager));
     });
@@ -108,42 +116,53 @@ function Home() {
     } else if (error) {
       return <div className="text">Error fetching villagers.</div>;
     } else if (filteredVillagers && filteredVillagers.length > 0) {
-      return filteredVillagers.map((villager, id) => {
-        if (villager.nh_details) {
-          return (
-            <div key={id} className="villager">
-              <img
-                src={villager.image_url}
-                alt="image"
-                className="imageVillager"
-              />
-              <p className="text">{villager.name}</p>
-              <div className="iconsVillagers">
-                <div className="iconDiv tooltip blue">
+      return (
+        <>
+          {filteredVillagers.map((villager, id) => {
+            if (villager.nh_details) {
+              return (
+                <div key={id} className="villager">
                   <img
-                    src={villager.nh_details.icon_url}
-                    alt="icon"
-                    className="iconVillager"
+                    src={villager.image_url}
+                    alt="image"
+                    className="imageVillager"
+                    onClick={() => openModal(villager)}
                   />
-                  <span className="tooltiptext">{villager.species}</span>
+                  <p className="text">{villager.name}</p>
+                  <div className="iconsVillagers">
+                    <div className="iconDiv tooltip blue">
+                      <img
+                        src={villager.nh_details.icon_url}
+                        alt="icon"
+                        className="iconVillager"
+                      />
+                      <span className="tooltiptext">{villager.species}</span>
+                    </div>
+                    <div className="iconDiv green">
+                      <Personality villager={villager} />
+                    </div>
+                    <div className="iconDiv pink">
+                      <Heart
+                        className={`iconVillager favBtn ${
+                          isFav(villager) ? "filled" : ""
+                        }`}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          addFav(villager);
+                        }}
+                      />
+                    </div>
+                  </div>
                 </div>
-                <div className="iconDiv green">
-                  <Personality villager={villager} />
-                </div>
-                <div className="iconDiv pink">
-                  <Heart
-                    className={`iconVillager favBtn ${
-                      isFav(villager) ? "filled" : ""
-                    }`}
-                    onClick={() => addFav({ villager })}
-                  />
-                </div>
-              </div>
-            </div>
-          );
-        }
-        return null;
-      });
+              );
+            }
+            return null;
+          })}
+          {isModalOpen && (
+            <VillagerInfo villager={selectedVillager} onClose={closeModal} />
+          )}
+        </>
+      );
     } else {
       return <div className="text">No villagers found.</div>;
     }

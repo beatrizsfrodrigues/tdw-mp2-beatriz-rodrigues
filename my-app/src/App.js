@@ -13,12 +13,12 @@ export default function App() {
       <div>
         <nav>
           <ul>
-            <li className="navLink">
-              <Link to="/">Home</Link>
-            </li>
-            <li className="navLink">
-              <Link to="/info">Info</Link>
-            </li>
+            <Link to="/" className="navLink">
+              <li>Home</li>
+            </Link>
+            <Link to="/info" className="navLink">
+              <li>Info</li>
+            </Link>
           </ul>
         </nav>
 

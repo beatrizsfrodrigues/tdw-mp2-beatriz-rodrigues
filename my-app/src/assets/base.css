@@ -26,15 +26,9 @@ ul {
   display: flex;
   align-items: center;
   justify-content: center;
-}
-
-.navLink a {
   text-decoration: none;
   text-align: center;
   color: #f6f2e5;
-
-  -webkit-text-stroke-width: 1;
-  -webkit-text-stroke-color: #4d3d35;
 }
 
 #home {
@@ -101,6 +95,24 @@ ul {
 }
 
 .imageVillager {
+  width: 201px;
+  height: 198px;
+  flex-shrink: 0;
+  padding: 8px;
+  border-radius: 56px;
+  border: 6px solid #4d3d35;
+  object-fit: contain;
+  background-image: url("https://i.pinimg.com/736x/3d/2e/c3/3d2ec30036404eb943eefaa1e2a47409.jpg");
+  background-repeat: no-repeat;
+  background-size: 500px;
+}
+
+.imageVillager:hover {
+  cursor: pointer;
+  filter: brightness(0.7);
+}
+
+.imageVillagerOpen {
   width: 201px;
   height: 198px;
   flex-shrink: 0;
@@ -197,4 +209,74 @@ ul {
 
 .filled {
   fill: #4d3d35;
+}
+
+#infoPage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+}
+
+#infoText {
+  width: 60%;
+  background-color: #f6f2e5;
+  padding: 48px;
+  border-radius: 100px;
+  gap: 32px;
+}
+
+#infoList {
+  display: flex;
+  flex-direction: column;
+  fill: #4d3d35;
+}
+
+#infoList > li::before {
+  content: "•  ";
+  color: #4d3d35;
+}
+
+.modal {
+  display: block;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgb(0, 0, 0);
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+.modal-content {
+  background-color: #f6f2e5;
+  padding: 40px 16px;
+  border-radius: 100px;
+  margin: 40px auto;
+  width: 400px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+}
+
+.close {
+  color: #4d3d35;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+  stroke: currentColor;
+  stroke-width: 4;
+  position: absolute;
+  right: 80px;
+}
+
+.close:hover,
+.close:focus {
+  color: #4d3d35;
+  text-decoration: none;
+  cursor: pointer;
+  stroke-width: 5;
 }
