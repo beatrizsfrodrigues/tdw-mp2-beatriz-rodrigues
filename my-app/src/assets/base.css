@@ -51,6 +51,8 @@ ul {
   display: flex;
   flex-direction: row;
   gap: 16px;
+  align-items: center;
+  justify-content: center;
 }
 
 .filter {
@@ -66,10 +68,6 @@ ul {
 
 .filter:hover {
   cursor: pointer;
-}
-
-#all {
-  background-color: #88c68a;
 }
 
 #fav {
@@ -146,6 +144,10 @@ ul {
   background-color: #7fd6bb;
 }
 
+.green2 {
+  background-color: #88c68a;
+}
+
 .favBtn {
   stroke: #4d3d35;
   width: 30px;
@@ -187,4 +189,12 @@ ul {
   border-width: 10px;
   border-style: solid;
   border-color: #4d3d35 transparent transparent transparent;
+}
+
+.filter.selected {
+  border: 3px solid #4d3d35;
+}
+
+.filled {
+  fill: #4d3d35;
 }
