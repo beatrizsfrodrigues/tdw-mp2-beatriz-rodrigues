@@ -6,7 +6,7 @@ No âmbito do Mini Projeto 2 da unidade curricular de Tecnologias e Desenvolvime
 
 ## **Objetivos**
 
-O principal objetivo deste projeto foi desenvolver uma aplicação que permita aos utilizadores visualizar informações sobre os habitantes (_villagers_) do jogo Animal Crossing: New Horizons. A aplicação deveria ser intuitiva, eficiente e proporcionar uma experiência agradável ao utilizador.
+O principal objetivo deste projeto foi desenvolver uma aplicação que permita aos utilizadores visualizar informações sobre os habitantes (villagers) do jogo Animal Crossing: New Horizons. A aplicação deveria ser intuitiva, eficiente e proporcionar uma experiência agradável ao utilizador.
 
 ## **Tecnologias Utilizadas**
 
@@ -45,29 +45,106 @@ O projeto foi organizado principalmente dentro do componente Home, com algumas f
 
 ### **Consumo da API**
 
-Utilizei o Redux Toolkit Query para realizar chamadas à Nookipedia API, incluindo nos cabeçalhos a chave de API e a versão necessária, conforme especificado pela documentação da mesma. A integração com a API foi essencial para obter dados atualizados sobre os _villagers_.
+Utilizei o Redux Toolkit Query para realizar chamadas à Nookipedia API, incluindo nos cabeçalhos a chave de API e a versão necessária, conforme especificado pela documentação da mesma. A integração com a API foi essencial para obter dados atualizados sobre os villagers.
+
+```jsx
+import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+
+const apiKey = process.env.REACT_APP_API_KEY;
+const apiUrl = process.env.REACT_APP_API_URL;
+
+export const nookipediaApi = createApi({
+  reducerPath: "nookipediaApi",
+  baseQuery: fetchBaseQuery({
+    baseUrl: apiUrl,
+    prepareHeaders: (headers) => {
+      headers.set("X-API-KEY", apiKey);
+      headers.set("Accept-Version", "1.7.0");
+      return headers;
+    },
+    async onError({ error, meta }) {
+      console.error("API Error:", error);
+    },
+  }),
+  endpoints: (builder) => ({
+    getVillagers: builder.query({
+      query: (params) => {
+        const queryString = new URLSearchParams(params).toString();
+        return `villagers?${queryString}`;
+      },
+    }),
+  }),
+});
+
+export const { useGetVillagersQuery } = nookipediaApi;
+```
 
 ### **Filtros e Paginação**
 
 Os filtros foram implementados para facilitar a pesquisa por personalidade dos villagers. Já a paginação melhora a experiência do utilizador, limitando o número de resultados exibidos por página.
 
+```jsx
+const getFilteredVillagers = useCallback(() => {
+  if (filter === "fav") {
+    return favVillagers;
+  } else if (filter === "All") {
+    return villagers;
+  } else {
+    const personalityFilterItem = personalityFilter.find(
+      (pf) => pf.name.toLowerCase() === filter.toLowerCase()
+    );
+    if (personalityFilterItem) {
+      return villagers.filter(
+        (villager) =>
+          villager.personality.toLowerCase() === filter.toLowerCase()
+      );
+    }
+  }
+  return villagers;
+}, [filter, favVillagers, villagers, personalityFilter]);
+```
+
+```jsx
+for (let i = 1; i <= Math.ceil(totalVillagers / villagersPerPage); i++) {
+  pageNumbers.push(i);
+}
+```
+
 ### **Favoritos**
 
 Os favoritos são guardados no Local Storage, proporcionando persistência mesmo após recarregar a página.
 
+```jsx
+useEffect(() => {
+  localStorage.setItem("favVillagers", JSON.stringify(favVillagers));
+}, [favVillagers]);
+```
+
 ### Pipeline
 
-Configurei uma _pipeline_ utilizando GitHub Actions. Esta pipeline automatiza tarefas como a validação do código e implementação contínua.
+Configurei uma pipeline utilizando GitHub Actions. Esta pipeline automatiza tarefas como a validação do código e implementação contínua.
 
 ### **Estilização**
 
 A estilização foi realizada com CSS e e alguns Styled Components, permitindo uma personalização por componente e garantindo uma interface limpa e consistente. A utilização de Styled Components facilitou a manutenção do código e a aplicação de estilos específicos a cada componente.
 
+```jsx
+export const FilterButton = styled.div`
+  width: 62px;
+  height: 62px;
+  border-radius: 24px;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+```
+
 ## **Desafios**
 
-### **Organização dos Reducers**
+### **Reducers**
 
-Inicialmente, toda a lógica da aplicação estava concentrada num único ficheiro, o que tornou o código desorganizado e difícil de gerir. Este problema tornou-se evidente quando comecei a implementar os _reducers_, pois a falta de separação entre as funcionalidades dificultava o trabalho e aumentava a probabilidade de erros. A solução foi dividir a lógica em diferentes componentes e utilizar Redux para gerir o estado global da aplicação.
+Inicialmente, toda a lógica da aplicação estava concentrada num único ficheiro, o que tornou o código desorganizado e difícil de gerir. Este problema tornou-se evidente quando comecei a implementar os reducers, pois a falta de separação entre as funcionalidades dificultava o trabalho e causou erros desnecessários que atrasaram o processo.
 
 ### **Implementação da Paginação**
 
@@ -92,7 +169,7 @@ Embora a aplicação desenvolvida cumpra os requisitos estabelecidos e os objeti
 Com mais tempo, planeava implementar:
 
 - **Filtro por Espécie**: Complementar os filtros atuais (personalidade) com a possibilidade de filtrar os villagers pela sua espécie, oferecendo maior flexibilidade na pesquisa.
-- **Autenticação de Utilizadores**: Introduzir um sistema de _login_, permitindo aos utilizadores criar contas e guardar as suas preferências de forma personalizada e persistente. Este recurso tornaria a aplicação mais envolvente e adaptada às necessidades de cada utilizador.
+- **Autenticação de Utilizadores**: Introduzir um sistema de login, permitindo aos utilizadores criar contas e guardar as suas preferências de forma personalizada e persistente. Este recurso tornaria a aplicação mais envolvente e adaptada às necessidades de cada utilizador.
 
 Estas melhorias poderiam elevar significativamente o valor da aplicação, tornando-a ainda mais prática e atrativa para os fãs de Animal Crossing.
 

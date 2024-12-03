@@ -26,6 +26,4 @@ export const nookipediaApi = createApi({
   }),
 });
 
-// localStorage.setItem("villagers", nookipediaApi.data);
-
 export const { useGetVillagersQuery } = nookipediaApi;

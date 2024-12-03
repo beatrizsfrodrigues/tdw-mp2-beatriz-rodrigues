@@ -115,7 +115,7 @@ function Home() {
         );
       }
     }
-    return villagers; // Default return if no filter matches
+    return villagers;
   }, [filter, favVillagers, villagers, personalityFilter]);
 
   useEffect(() => {
@@ -152,12 +152,6 @@ function Home() {
 
     return validFavVillagers.some((fav) => fav.id === villager.id);
   }
-
-  // function setFavoriteVillagers(favVillagers) {
-  //   favVillagers.forEach((villager) => {
-  //     dispatch(addFavVillager(villager));
-  //   });
-  // }
 
   function loadingVillagers() {
     if (status === "loading") {
@@ -246,25 +240,6 @@ function Home() {
       );
     }
   }
-
-  // function getFilteredVillagers() {
-  //   setCurrentPage(1);
-  //   if (filter === "fav") {
-  //     return favVillagers;
-  //   } else if (filter === "All") {
-  //     return villagers;
-  //   } else {
-  //     const personalityFilterItem = personalityFilter.find(
-  //       (pf) => pf.name.toLowerCase() === filter
-  //     );
-  //     if (personalityFilterItem) {
-  //       return villagers.filter(
-  //         (villager) => villager.personality.toLowerCase() === filter
-  //       );
-  //     }
-  //   }
-  //   return villagers; // Default return if no filter matches
-  // }
 
   return (
     <div id="home">

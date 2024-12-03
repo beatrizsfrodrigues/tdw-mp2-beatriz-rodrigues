@@ -17,7 +17,7 @@ const villagersSlice = createSlice({
         villager = action.payload;
       }
 
-      const favVillagers = JSON.parse(JSON.stringify(state.favVillagers)); // Convert Proxy to plain object
+      const favVillagers = JSON.parse(JSON.stringify(state.favVillagers));
 
       if (!favVillagers.find((vil) => vil.id === villager.id)) {
         state.favVillagers.push(villager);
@@ -26,7 +26,7 @@ const villagersSlice = createSlice({
     removeFavVillager: (state, action) => {
       const villagerId = action.payload;
       console.log(villagerId);
-      const favVillagers = JSON.parse(JSON.stringify(state.favVillagers)); // Convert Proxy to plain object
+      const favVillagers = JSON.parse(JSON.stringify(state.favVillagers));
       console.log(favVillagers);
       state.favVillagers = state.favVillagers.filter(
         (vil) => vil.id !== villagerId
