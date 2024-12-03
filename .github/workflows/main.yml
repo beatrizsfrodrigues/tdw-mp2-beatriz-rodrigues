@@ -44,5 +44,5 @@ jobs:
         working-directory: my-app
 
       - name: Deploy to Vercel
-        run: npx vercel --prod --token ${{ secrets.VERCEL_TOKEN }}
+        run: npx vercel --prod --token ${{ secrets.VERCEL_TOKEN }} --yes
         working-directory: my-app
