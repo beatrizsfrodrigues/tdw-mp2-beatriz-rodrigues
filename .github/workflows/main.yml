@@ -29,20 +29,20 @@ jobs:
 
       - name: Install dependencies
         run: npm install
-        working-directory: ./path/to/your/project
+        working-directory: my-app
 
       - name: Build Project
         run: npm run build
         if: success() && (github.ref == 'refs/heads/master' || github.ref == 'refs/heads/main')
-        working-directory: ./path/to/your/project
+        working-directory: my-app
 
       - name: Build the project
         env:
           REACT_APP_API_KEY: ${{ secrets.REACT_APP_API_KEY }}
           REACT_APP_API_URL: ${{ secrets.REACT_APP_API_URL }}
         run: npm run build
-        working-directory: ./path/to/your/project
+        working-directory: my-app
 
       - name: Deploy to Vercel
         run: npx vercel --prod --token ${{ secrets.VERCEL_TOKEN }}
-        working-directory: ./path/to/your/project
+        working-directory: my-app
