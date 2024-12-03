@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, useMemo } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import "../assets/base.css";
 import bigSister from "../assets/big_sister.png";
@@ -39,16 +39,19 @@ function Home() {
     error: apiError,
     isLoading,
   } = useGetVillagersQuery({ nhdetails: true });
-  const personalityFilter = [
-    { name: "Cranky", data: cranky },
-    { name: "Jock", data: jock },
-    { name: "Lazy", data: lazy },
-    { name: "Normal", data: normal },
-    { name: "Peppy", data: peppy },
-    { name: "Smug", data: smug },
-    { name: "Snooty", data: snooty },
-    { name: "Big Sister", data: bigSister },
-  ];
+  const personalityFilter = useMemo(
+    () => [
+      { name: "Cranky", data: cranky },
+      { name: "Jock", data: jock },
+      { name: "Lazy", data: lazy },
+      { name: "Normal", data: normal },
+      { name: "Peppy", data: peppy },
+      { name: "Smug", data: smug },
+      { name: "Snooty", data: snooty },
+      { name: "Big Sister", data: bigSister },
+    ],
+    []
+  );
 
   useEffect(() => {
     if (isLoading) {
@@ -133,7 +136,7 @@ function Home() {
     if (
       favVillagers
         .filter((fav) => fav !== undefined)
-        .find((vil) => vil.id == villager.id)
+        .find((vil) => vil.id === villager.id)
     ) {
       dispatch(removeFavVillager(villager.id));
     } else {
