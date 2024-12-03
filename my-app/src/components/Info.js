@@ -1,6 +1,6 @@
 import React from "react";
 
-function Info({}) {
+function Info() {
   return (
     <div id="infoPage">
       <div id="infoText" className="text">

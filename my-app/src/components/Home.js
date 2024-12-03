@@ -66,6 +66,15 @@ function Home() {
     }
   }, [data, apiError, isLoading, dispatch]);
 
+  const setFavoriteVillagers = useCallback(
+    (favVillagers) => {
+      favVillagers.forEach((villager) => {
+        dispatch(addFavVillager(villager));
+      });
+    },
+    [dispatch]
+  );
+
   useEffect(() => {
     const savedFavVillagers = localStorage.getItem("favVillagers");
 
@@ -87,9 +96,28 @@ function Home() {
     localStorage.setItem("favVillagers", JSON.stringify(favVillagers));
   }, [favVillagers]);
 
+  const getFilteredVillagers = useCallback(() => {
+    if (filter === "fav") {
+      return favVillagers;
+    } else if (filter === "All") {
+      return villagers;
+    } else {
+      const personalityFilterItem = personalityFilter.find(
+        (pf) => pf.name.toLowerCase() === filter.toLowerCase()
+      );
+      if (personalityFilterItem) {
+        return villagers.filter(
+          (villager) =>
+            villager.personality.toLowerCase() === filter.toLowerCase()
+        );
+      }
+    }
+    return villagers; // Default return if no filter matches
+  }, [filter, favVillagers, villagers, personalityFilter]);
+
   useEffect(() => {
     setFilteredVillagers(getFilteredVillagers());
-  }, [villagers, filter, favVillagers]);
+  }, [villagers, filter, favVillagers, getFilteredVillagers]);
 
   function openModal(villager) {
     setSelectedVillager(villager);
@@ -216,24 +244,24 @@ function Home() {
     }
   }
 
-  function getFilteredVillagers() {
-    setCurrentPage(1);
-    if (filter === "fav") {
-      return favVillagers;
-    } else if (filter === "All") {
-      return villagers;
-    } else {
-      const personalityFilterItem = personalityFilter.find(
-        (pf) => pf.name.toLowerCase() === filter
-      );
-      if (personalityFilterItem) {
-        return villagers.filter(
-          (villager) => villager.personality.toLowerCase() === filter
-        );
-      }
-    }
-    return villagers; // Default return if no filter matches
-  }
+  // function getFilteredVillagers() {
+  //   setCurrentPage(1);
+  //   if (filter === "fav") {
+  //     return favVillagers;
+  //   } else if (filter === "All") {
+  //     return villagers;
+  //   } else {
+  //     const personalityFilterItem = personalityFilter.find(
+  //       (pf) => pf.name.toLowerCase() === filter
+  //     );
+  //     if (personalityFilterItem) {
+  //       return villagers.filter(
+  //         (villager) => villager.personality.toLowerCase() === filter
+  //       );
+  //     }
+  //   }
+  //   return villagers; // Default return if no filter matches
+  // }
 
   return (
     <div id="home">
