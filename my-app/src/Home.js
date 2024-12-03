@@ -19,6 +19,7 @@ import {
 import { useGetVillagersQuery } from "./services/api";
 import { Heart } from "feather-icons-react";
 import VillagerInfo from "./VillagerInfo";
+import Pagination from "./Pagination";
 
 function Home() {
   const dispatch = useDispatch();
@@ -29,12 +30,24 @@ function Home() {
   const [filter, setFilter] = useState("All");
   const [filteredVillagers, setFilteredVillagers] = useState([]);
   const [selectedVillager, setSelectedVillager] = useState(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [villagersPerPage] = useState(18);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const {
     data,
     error: apiError,
     isLoading,
   } = useGetVillagersQuery({ nhdetails: true });
+  const personalityFilter = [
+    { name: "Cranky", data: cranky },
+    { name: "Jock", data: jock },
+    { name: "Lazy", data: lazy },
+    { name: "Normal", data: normal },
+    { name: "Peppy", data: peppy },
+    { name: "Smug", data: smug },
+    { name: "Snooty", data: snooty },
+    { name: "Big Sister", data: bigSister },
+  ];
 
   useEffect(() => {
     if (isLoading) {
@@ -43,8 +56,12 @@ function Home() {
       dispatch(setStatus("failed"));
       dispatch(setError(apiError.message));
     } else if (data) {
+      const villagersWithNhDetails = data.filter(
+        (villager) => villager.nh_details
+      );
+
       dispatch(setStatus("succeeded"));
-      dispatch(setVillagers(data));
+      dispatch(setVillagers(villagersWithNhDetails));
     }
   }, [data, apiError, isLoading, dispatch]);
 
@@ -112,55 +129,70 @@ function Home() {
 
   function loadingVillagers() {
     if (status === "loading") {
-      return <div className="text">Loading villagers...</div>;
+      return <div className="text listBoard">Loading villagers...</div>;
     } else if (error) {
-      return <div className="text">Error fetching villagers.</div>;
+      return <div className="text listBoard">Error fetching villagers.</div>;
     } else if (filteredVillagers && filteredVillagers.length > 0) {
+      const indexOfLastVillager = currentPage * villagersPerPage;
+      const indexOfFirstVillager = indexOfLastVillager - villagersPerPage;
+      const currentVillagers = filteredVillagers.slice(
+        indexOfFirstVillager,
+        indexOfLastVillager
+      );
+
       return (
         <>
-          {filteredVillagers.map((villager, id) => {
-            if (villager.nh_details) {
-              return (
-                <div key={id} className="villager">
-                  <img
-                    src={villager.image_url}
-                    alt="image"
-                    className="imageVillager"
-                    onClick={() => openModal(villager)}
-                  />
-                  <p className="text">{villager.name}</p>
-                  <div className="iconsVillagers">
-                    <div className="iconDiv tooltip blue">
-                      <img
-                        src={villager.nh_details.icon_url}
-                        alt="icon"
-                        className="iconVillager"
-                      />
-                      <span className="tooltiptext">{villager.species}</span>
-                    </div>
-                    <div className="iconDiv green">
-                      <Personality villager={villager} />
-                    </div>
-                    <div className="iconDiv pink">
-                      <Heart
-                        className={`iconVillager favBtn ${
-                          isFav(villager) ? "filled" : ""
-                        }`}
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          addFav(villager);
-                        }}
-                      />
+          <div className="listBoard">
+            {currentVillagers.map((villager, id) => {
+              if (villager.nh_details) {
+                return (
+                  <div key={id} className="villager">
+                    <img
+                      src={villager.image_url}
+                      alt="image"
+                      className="imageVillager"
+                      onClick={() => openModal(villager)}
+                    />
+                    <p className="text">{villager.name}</p>
+                    <div className="iconsVillagers">
+                      <div className="iconDiv tooltip blue">
+                        <img
+                          src={villager.nh_details.icon_url}
+                          alt="icon"
+                          className="iconVillager"
+                        />
+                        <span className="tooltiptext">{villager.species}</span>
+                      </div>
+                      <div className="iconDiv green">
+                        <Personality villager={villager} />
+                      </div>
+                      <div className="iconDiv pink">
+                        <Heart
+                          className={`iconVillager favBtn ${
+                            isFav(villager) ? "filled" : ""
+                          }`}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            addFav(villager);
+                          }}
+                        />
+                      </div>
                     </div>
                   </div>
-                </div>
-              );
-            }
-            return null;
-          })}
+                );
+              }
+              return null;
+            })}
+          </div>
           {isModalOpen && (
             <VillagerInfo villager={selectedVillager} onClose={closeModal} />
           )}
+          <Pagination
+            villagersPerPage={villagersPerPage}
+            totalVillagers={filteredVillagers.length}
+            setCurrentPage={setCurrentPage}
+            currentPage={currentPage}
+          />
         </>
       );
     } else {
@@ -169,63 +201,37 @@ function Home() {
   }
 
   function Personality({ villager }) {
-    if (villager.personality.toLowerCase() == "jock") {
-      return <img src={jock} alt="icon" className="iconVillager" />;
-    } else if (villager.personality.toLowerCase() == "big sister") {
-      return <img src={bigSister} alt="icon" className="iconVillager" />;
-    } else if (villager.personality.toLowerCase() == "cranky") {
-      return <img src={cranky} alt="icon" className="iconVillager" />;
-    } else if (villager.personality.toLowerCase() == "lazy") {
-      return <img src={lazy} alt="icon" className="iconVillager" />;
-    } else if (villager.personality.toLowerCase() == "normal") {
-      return <img src={normal} alt="icon" className="iconVillager" />;
-    } else if (villager.personality.toLowerCase() == "smug") {
-      return <img src={smug} alt="icon" className="iconVillager" />;
-    } else if (villager.personality.toLowerCase() == "snooty") {
-      return <img src={snooty} alt="icon" className="iconVillager" />;
-    } else if (villager.personality.toLowerCase() == "peppy") {
-      return <img src={peppy} alt="icon" className="iconVillager" />;
+    const personalityFilterItem = personalityFilter.find(
+      (pf) => pf.name.toLowerCase() === villager.personality.toLowerCase()
+    );
+    if (personalityFilterItem) {
+      return (
+        <img
+          src={personalityFilterItem.data}
+          alt="icon"
+          className="iconVillager"
+        />
+      );
     }
   }
 
   function getFilteredVillagers() {
-    if (filter === "jock") {
-      return villagers.filter(
-        (villager) => villager.personality.toLowerCase() == "jock"
-      );
-    } else if (filter === "big sister") {
-      return villagers.filter(
-        (villager) => villager.personality.toLowerCase() == "big sister"
-      );
-    } else if (filter === "normal") {
-      return villagers.filter(
-        (villager) => villager.personality.toLowerCase() == "normal"
-      );
-    } else if (filter === "cranky") {
-      return villagers.filter(
-        (villager) => villager.personality.toLowerCase() == "cranky"
-      );
-    } else if (filter === "lazy") {
-      return villagers.filter(
-        (villager) => villager.personality.toLowerCase() == "lazy"
-      );
-    } else if (filter === "smug") {
-      return villagers.filter(
-        (villager) => villager.personality.toLowerCase() == "smug"
-      );
-    } else if (filter === "snooty") {
-      return villagers.filter(
-        (villager) => villager.personality.toLowerCase() == "snooty"
-      );
-    } else if (filter === "peppy") {
-      return villagers.filter(
-        (villager) => villager.personality.toLowerCase() == "peppy"
-      );
-    } else if (filter === "fav") {
+    setCurrentPage(1);
+    if (filter === "fav") {
       return favVillagers;
+    } else if (filter === "All") {
+      return villagers;
     } else {
-      return villagers; //& For "All"
+      const personalityFilterItem = personalityFilter.find(
+        (pf) => pf.name.toLowerCase() === filter
+      );
+      if (personalityFilterItem) {
+        return villagers.filter(
+          (villager) => villager.personality.toLowerCase() === filter
+        );
+      }
     }
+    return villagers; // Default return if no filter matches
   }
 
   return (
@@ -237,64 +243,19 @@ function Home() {
         >
           All
         </div>
-        <div
-          className={`filter tooltip ${
-            filter === "big sister" ? "selected" : ""
-          }`}
-          onClick={() => setFilter("big sister")}
-        >
-          <img src={bigSister} alt="big sister" id="bigSister" />
-          <span className="tooltiptext">Big Sister</span>
-        </div>
-        <div
-          className={`filter tooltip ${filter === "cranky" ? "selected" : ""}`}
-          onClick={() => setFilter("cranky")}
-        >
-          <img src={cranky} alt="cranky" id="cranky" />
-          <span className="tooltiptext">Cranky</span>
-        </div>
-        <div
-          className={`filter tooltip ${filter === "jock" ? "selected" : ""}`}
-          onClick={() => setFilter("jock")}
-        >
-          <img src={jock} alt="jock" id="jock" />
-          <span className="tooltiptext">Jock</span>
-        </div>
-        <div
-          className={`filter tooltip ${filter === "lazy" ? "selected" : ""}`}
-          onClick={() => setFilter("lazy")}
-        >
-          <img src={lazy} alt="lazy" id="lazy" />
-          <span className="tooltiptext">Lazy</span>
-        </div>
-        <div
-          className={`filter tooltip ${filter === "normal" ? "selected" : ""}`}
-          onClick={() => setFilter("normal")}
-        >
-          <img src={normal} alt="normal" id="normal" />
-          <span className="tooltiptext">Normal</span>
-        </div>
-        <div
-          className={`filter tooltip ${filter === "smug" ? "selected" : ""}`}
-          onClick={() => setFilter("smug")}
-        >
-          <img src={smug} alt="smug" id="smug" />
-          <span className="tooltiptext">Smug</span>
-        </div>
-        <div
-          className={`filter tooltip ${filter === "snooty" ? "selected" : ""}`}
-          onClick={() => setFilter("snooty")}
-        >
-          <img src={snooty} alt="snooty" id="snooty" />
-          <span className="tooltiptext">Snooty</span>
-        </div>
-        <div
-          className={`filter tooltip ${filter === "peppy" ? "selected" : ""}`}
-          onClick={() => setFilter("peppy")}
-        >
-          <img src={peppy} alt="peppy" id="peppy" />
-          <span className="tooltiptext">Peppy</span>
-        </div>
+        {personalityFilter.map((pf) => (
+          <div
+            key={pf.name}
+            className={`filter tooltip ${
+              filter === pf.name.toLowerCase() ? "selected" : ""
+            }`}
+            onClick={() => setFilter(pf.name.toLowerCase())}
+          >
+            <img src={pf.data} alt={pf.name} />
+            <span className="tooltiptext">{pf.name}</span>
+          </div>
+        ))}
+
         <div
           className={`filter tooltip pink ${
             filter === "fav" ? "selected" : ""
@@ -306,7 +267,7 @@ function Home() {
         </div>
       </div>
 
-      <div id="listBoard">{loadingVillagers()}</div>
+      <div>{loadingVillagers()}</div>
     </div>
   );
 }

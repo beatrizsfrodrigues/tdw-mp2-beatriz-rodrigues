@@ -1,11 +1,9 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
-// import ReactDOM from "react-dom";
 import Info from "./Info.js";
 import Home from "./Home.js";
-
-// import dotenv from "dotenv";
-// import { Provider } from "react-redux";
+import leaf from "./assets/leaf.png";
+import cards from "./assets/cards.png";
 
 export default function App() {
   return (
@@ -14,10 +12,10 @@ export default function App() {
         <nav>
           <ul>
             <Link to="/" className="navLink">
-              <li>Home</li>
+              <img src={leaf} alt="Home" className="navImg" />
             </Link>
             <Link to="/info" className="navLink">
-              <li>Info</li>
+              <img src={cards} alt="Info" className="navImg" />
             </Link>
           </ul>
         </nav>

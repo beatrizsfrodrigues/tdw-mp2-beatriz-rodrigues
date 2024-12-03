@@ -98,6 +98,13 @@ function Info({}) {
           >
             Leaf icon
           </a>
+          <br />
+          <a
+            href="https://www.figma.com/community/file/882693668626621042"
+            target="_blank"
+          >
+            Nav icons
+          </a>
         </div>
       </div>
     </div>

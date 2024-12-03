@@ -68,7 +68,7 @@ ul {
   background-color: #f7a7b3;
 }
 
-#listBoard {
+.listBoard {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   align-items: center;
@@ -252,6 +252,7 @@ ul {
 
 .modal-content {
   background-color: #f6f2e5;
+  border: 6px solid #4d3d35;
   padding: 40px 16px;
   border-radius: 100px;
   margin: 40px auto;
@@ -270,7 +271,7 @@ ul {
   stroke: currentColor;
   stroke-width: 4;
   position: absolute;
-  right: 80px;
+  right: 60px;
 }
 
 .close:hover,
@@ -279,4 +280,36 @@ ul {
   text-decoration: none;
   cursor: pointer;
   stroke-width: 5;
+}
+
+.navImg {
+  width: 50px;
+}
+
+#pages {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 16px;
+}
+
+.pagination {
+  gap: 4px;
+  background-color: #f6f2e5;
+  padding: 16px 24px;
+  border-radius: 100px;
+}
+
+.pageLink {
+  color: #4d3d35;
+}
+
+.pageItem {
+  padding: 8px;
+  border-radius: 8px;
+  /* background-color: #e39368; */
+}
+
+.active {
+  background-color: #e39368;
 }
