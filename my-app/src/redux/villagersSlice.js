@@ -1,4 +1,3 @@
-// villagersSlice.js
 import { createSlice } from "@reduxjs/toolkit";
 
 const villagersSlice = createSlice({

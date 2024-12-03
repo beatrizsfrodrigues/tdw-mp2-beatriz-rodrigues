@@ -1,25 +1,26 @@
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import "./assets/base.css";
-import bigSister from "./assets/big_sister.png";
-import cranky from "./assets/cranky.png";
-import jock from "./assets/jock.png";
-import lazy from "./assets/lazy.png";
-import normal from "./assets/normal.png";
-import peppy from "./assets/peppy.png";
-import smug from "./assets/smug.png";
-import snooty from "./assets/snooty.png";
+import "../assets/base.css";
+import bigSister from "../assets/big_sister.png";
+import cranky from "../assets/cranky.png";
+import jock from "../assets/jock.png";
+import lazy from "../assets/lazy.png";
+import normal from "../assets/normal.png";
+import peppy from "../assets/peppy.png";
+import smug from "../assets/smug.png";
+import snooty from "../assets/snooty.png";
 import {
   addFavVillager,
   removeFavVillager,
   setVillagers,
   setStatus,
   setError,
-} from "./redux/villagersSlice";
-import { useGetVillagersQuery } from "./services/api";
+} from "../redux/villagersSlice";
+import { useGetVillagersQuery } from "../services/api";
 import { Heart } from "feather-icons-react";
 import VillagerInfo from "./VillagerInfo";
 import Pagination from "./Pagination";
+import { FilterButton, VillagerCard, VillagerImage } from "../StyledComponents";
 
 function Home() {
   const dispatch = useDispatch();
@@ -146,8 +147,8 @@ function Home() {
             {currentVillagers.map((villager, id) => {
               if (villager.nh_details) {
                 return (
-                  <div key={id} className="villager">
-                    <img
+                  <VillagerCard key={id} className="villager">
+                    <VillagerImage
                       src={villager.image_url}
                       alt="image"
                       className="imageVillager"
@@ -178,7 +179,7 @@ function Home() {
                         />
                       </div>
                     </div>
-                  </div>
+                  </VillagerCard>
                 );
               }
               return null;
@@ -237,26 +238,26 @@ function Home() {
   return (
     <div id="home">
       <div id="filters">
-        <div
+        <FilterButton
           className={`filter green2 ${filter === "All" ? "selected" : ""}`}
           onClick={() => setFilter("All")}
         >
           All
-        </div>
+        </FilterButton>
         {personalityFilter.map((pf) => (
-          <div
+          <FilterButton
             key={pf.name}
-            className={`filter tooltip ${
+            className={`filter tooltip blue ${
               filter === pf.name.toLowerCase() ? "selected" : ""
             }`}
             onClick={() => setFilter(pf.name.toLowerCase())}
           >
             <img src={pf.data} alt={pf.name} />
             <span className="tooltiptext">{pf.name}</span>
-          </div>
+          </FilterButton>
         ))}
 
-        <div
+        <FilterButton
           className={`filter tooltip pink ${
             filter === "fav" ? "selected" : ""
           }`}
@@ -264,7 +265,7 @@ function Home() {
         >
           Fav
           <span className="tooltiptext">Favorites</span>
-        </div>
+        </FilterButton>
       </div>
 
       <div>{loadingVillagers()}</div>

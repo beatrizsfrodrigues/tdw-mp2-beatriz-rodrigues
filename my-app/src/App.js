@@ -1,7 +1,7 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
-import Info from "./Info.js";
-import Home from "./Home.js";
+import Info from "./components/Info.js";
+import Home from "./components/Home.js";
 import leaf from "./assets/leaf.png";
 import cards from "./assets/cards.png";
 

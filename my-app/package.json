@@ -19,6 +19,7 @@
     "react-router-dom": "^7.0.1",
     "react-scripts": "5.0.1",
     "sort-by": "^1.2.0",
+    "styled-components": "^6.1.13",
     "use-local-storage": "^3.0.0",
     "web-vitals": "^2.1.4"
   },
