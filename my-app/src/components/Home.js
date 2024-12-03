@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import "../assets/base.css";
 import bigSister from "../assets/big_sister.png";
@@ -150,11 +150,11 @@ function Home() {
     return validFavVillagers.some((fav) => fav.id === villager.id);
   }
 
-  function setFavoriteVillagers(favVillagers) {
-    favVillagers.forEach((villager) => {
-      dispatch(addFavVillager(villager));
-    });
-  }
+  // function setFavoriteVillagers(favVillagers) {
+  //   favVillagers.forEach((villager) => {
+  //     dispatch(addFavVillager(villager));
+  //   });
+  // }
 
   function loadingVillagers() {
     if (status === "loading") {
