@@ -1,13 +1,10 @@
-name: Build and Deploy
+name: Deploy to Vercel
 
 on:
   push:
     branches:
       - main
-
-permissions:
-  checks: write
-  contents: write
+      - master
 
 jobs:
   build:
@@ -15,7 +12,7 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v2
 
       - name: Set up Node.js
         uses: actions/setup-node@v4
@@ -32,16 +29,20 @@ jobs:
 
       - name: Install dependencies
         run: npm install
+        working-directory: ./path/to/your/project
 
       - name: Build Project
         run: npm run build
         if: success() && (github.ref == 'refs/heads/master' || github.ref == 'refs/heads/main')
+        working-directory: ./path/to/your/project
 
       - name: Build the project
         env:
           REACT_APP_API_KEY: ${{ secrets.REACT_APP_API_KEY }}
           REACT_APP_API_URL: ${{ secrets.REACT_APP_API_URL }}
         run: npm run build
+        working-directory: ./path/to/your/project
 
       - name: Deploy to Vercel
         run: npx vercel --prod --token ${{ secrets.VERCEL_TOKEN }}
+        working-directory: ./path/to/your/project
