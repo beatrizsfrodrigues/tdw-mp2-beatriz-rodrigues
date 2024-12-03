@@ -66,13 +66,18 @@ function Info({}) {
         <br />
         <h2>Resources</h2>
         <div>
-          <a href="https://api.nookipedia.com/" target="_blank">
+          <a
+            href="https://api.nookipedia.com/"
+            target="_blank"
+            rel="noreferrer"
+          >
             Nookipedia API
           </a>
           <br />
           <a
             href="https://drive.google.com/drive/folders/1fStLh1yQ_hW6fraE4K2XRF-qcLRo5Ybi"
             target="_blank"
+            rel="noreferrer"
           >
             Background image
           </a>
@@ -80,21 +85,27 @@ function Info({}) {
           <a
             href="https://i.pinimg.com/736x/3d/2e/c3/3d2ec30036404eb943eefaa1e2a47409.jpg"
             target="_blank"
+            rel="noreferrer"
           >
             Background image for villagers
           </a>
           <br />
-          <a href="https://nookipedia.com/wiki/Villager" target="_blank">
+          <a
+            href="https://nookipedia.com/wiki/Villager"
+            target="_blank"
+            rel="noreferrer"
+          >
             Personality icons
           </a>
           <br />
-          <a href="https://feathericons.com/" target="_blank">
+          <a href="https://feathericons.com/" target="_blank" rel="noreferrer">
             Feather icons
           </a>
           <br />
           <a
             href="https://www.favicon.cc/?action=icon&file_id=751424"
             target="_blank"
+            rel="noreferrer"
           >
             Leaf icon
           </a>
@@ -102,6 +113,7 @@ function Info({}) {
           <a
             href="https://www.figma.com/community/file/882693668626621042"
             target="_blank"
+            rel="noreferrer"
           >
             Nav icons
           </a>

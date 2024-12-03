@@ -81,7 +81,7 @@ function Home() {
         );
       }
     }
-  }, [dispatch]);
+  }, [dispatch, setFavoriteVillagers]);
 
   useEffect(() => {
     localStorage.setItem("favVillagers", JSON.stringify(favVillagers));
