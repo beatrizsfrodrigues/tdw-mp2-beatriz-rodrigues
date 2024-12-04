@@ -14,7 +14,6 @@ import leaf from "./assets/leaf.png";
 import cards from "./assets/cards.png";
 
 function App() {
-  const villagers = useSelector((state) => state.villagers.villagers);
   const location = useLocation();
   const state = location.state || {};
 
