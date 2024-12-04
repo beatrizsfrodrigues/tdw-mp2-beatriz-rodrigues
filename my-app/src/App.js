@@ -6,7 +6,6 @@ import {
   Link,
   useLocation,
 } from "react-router-dom";
-import { useSelector } from "react-redux";
 import Info from "./components/Info.js";
 import Home from "./components/Home.js";
 import VillagerInfo from "./components/VillagerInfo";
