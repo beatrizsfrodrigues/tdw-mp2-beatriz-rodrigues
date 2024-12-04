@@ -33,10 +33,10 @@ function Home() {
   const error = useSelector((state) => state.villagers.error);
   const [filter, setFilter] = useState("All");
   const [filteredVillagers, setFilteredVillagers] = useState([]);
-  const [selectedVillager, setSelectedVillager] = useState(null);
+  const [selectedVillager] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [villagersPerPage] = useState(18);
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isModalOpen] = useState(false);
   const {
     data,
     error: apiError,

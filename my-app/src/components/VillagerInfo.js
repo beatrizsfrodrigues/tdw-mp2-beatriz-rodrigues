@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { X } from "feather-icons-react";
 import { useGetVillagersQuery } from "../services/api";
