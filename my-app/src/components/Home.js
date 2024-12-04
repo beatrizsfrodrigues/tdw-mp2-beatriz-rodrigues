@@ -101,14 +101,17 @@ function Home() {
 
   const getFilteredVillagers = useCallback(() => {
     if (filter === "fav") {
+      setCurrentPage(1);
       return favVillagers;
     } else if (filter === "All") {
+      setCurrentPage(1);
       return villagers;
     } else {
       const personalityFilterItem = personalityFilter.find(
         (pf) => pf.name.toLowerCase() === filter.toLowerCase()
       );
       if (personalityFilterItem) {
+        setCurrentPage(1);
         return villagers.filter(
           (villager) =>
             villager.personality.toLowerCase() === filter.toLowerCase()
