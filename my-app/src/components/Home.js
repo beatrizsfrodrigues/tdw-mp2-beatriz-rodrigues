@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback, useMemo } from "react";
 import { useSelector, useDispatch } from "react-redux";
+import { useNavigate, useLocation } from "react-router-dom";
 import "../assets/base.css";
 import bigSister from "../assets/big_sister.png";
 import cranky from "../assets/cranky.png";
@@ -24,6 +25,8 @@ import { FilterButton, VillagerCard, VillagerImage } from "../StyledComponents";
 
 function Home() {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const location = useLocation();
   const villagers = useSelector((state) => state.villagers.villagers);
   const favVillagers = useSelector((state) => state.villagers.favVillagers);
   const status = useSelector((state) => state.villagers.status);
@@ -69,6 +72,7 @@ function Home() {
     }
   }, [data, apiError, isLoading, dispatch]);
 
+  // ? Favorites
   const setFavoriteVillagers = useCallback(
     (favVillagers) => {
       favVillagers.forEach((villager) => {
@@ -99,6 +103,28 @@ function Home() {
     localStorage.setItem("favVillagers", JSON.stringify(favVillagers));
   }, [favVillagers]);
 
+  function addFav(villager) {
+    if (
+      favVillagers
+        .filter((fav) => fav !== undefined)
+        .find((vil) => vil.id === villager.id)
+    ) {
+      dispatch(removeFavVillager(villager.id));
+    } else {
+      dispatch(addFavVillager(villager));
+    }
+  }
+
+  function isFav(villager) {
+    if (!favVillagers) {
+      return false;
+    }
+    const validFavVillagers = favVillagers.filter((fav) => fav !== undefined);
+
+    return validFavVillagers.some((fav) => fav.id === villager.id);
+  }
+  // ? END Favorites
+
   const getFilteredVillagers = useCallback(() => {
     if (filter === "fav") {
       setCurrentPage(1);
@@ -125,35 +151,12 @@ function Home() {
     setFilteredVillagers(getFilteredVillagers());
   }, [villagers, filter, favVillagers, getFilteredVillagers]);
 
-  function openModal(villager) {
-    setSelectedVillager(villager);
-    setIsModalOpen(true);
+  function openModal(name) {
+    navigate(`/villager/${name}`, { state: { backgroundLocation: location } });
   }
 
   function closeModal() {
-    setSelectedVillager(null);
-    setIsModalOpen(false);
-  }
-
-  function addFav(villager) {
-    if (
-      favVillagers
-        .filter((fav) => fav !== undefined)
-        .find((vil) => vil.id === villager.id)
-    ) {
-      dispatch(removeFavVillager(villager.id));
-    } else {
-      dispatch(addFavVillager(villager));
-    }
-  }
-
-  function isFav(villager) {
-    if (!favVillagers) {
-      return false;
-    }
-    const validFavVillagers = favVillagers.filter((fav) => fav !== undefined);
-
-    return validFavVillagers.some((fav) => fav.id === villager.id);
+    navigate("/");
   }
 
   function loadingVillagers() {
@@ -180,7 +183,7 @@ function Home() {
                       src={villager.image_url}
                       alt="image"
                       className="imageVillager"
-                      onClick={() => openModal(villager)}
+                      onClick={() => openModal(villager.name)}
                     />
                     <p className="text">{villager.name}</p>
                     <div className="iconsVillagers">

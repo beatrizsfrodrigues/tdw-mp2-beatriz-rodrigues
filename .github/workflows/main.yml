@@ -37,7 +37,6 @@ jobs:
 
       - name: Build Project
         run: npm run build
-        if: success() && (github.ref == 'refs/heads/master' || github.ref == 'refs/heads/main')
         working-directory: my-app
 
       - name: Build the project

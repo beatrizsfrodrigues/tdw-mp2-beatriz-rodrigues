@@ -1,4 +1,3 @@
-// Pagination.js
 import React from "react";
 
 const Pagination = ({
@@ -8,8 +7,6 @@ const Pagination = ({
   currentPage,
 }) => {
   const pageNumbers = [];
-  console.log(totalVillagers);
-  console.log(villagersPerPage);
 
   for (let i = 1; i <= Math.ceil(totalVillagers / villagersPerPage); i++) {
     pageNumbers.push(i);
