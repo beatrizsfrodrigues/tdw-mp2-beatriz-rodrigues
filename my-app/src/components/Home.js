@@ -21,7 +21,13 @@ import { useGetVillagersQuery } from "../services/api";
 import { Heart } from "feather-icons-react";
 import VillagerInfo from "./VillagerInfo";
 import Pagination from "./Pagination";
-import { FilterButton, VillagerCard, VillagerImage } from "../StyledComponents";
+import {
+  FilterButton,
+  VillagerCard,
+  VillagerImage,
+  ListBoard,
+  IconDiv,
+} from "../StyledComponents";
 
 function Home() {
   const dispatch = useDispatch();
@@ -42,19 +48,17 @@ function Home() {
     error: apiError,
     isLoading,
   } = useGetVillagersQuery({ nhdetails: true });
-  const personalityFilter = useMemo(
-    () => [
-      { name: "Cranky", data: cranky },
-      { name: "Jock", data: jock },
-      { name: "Lazy", data: lazy },
-      { name: "Normal", data: normal },
-      { name: "Peppy", data: peppy },
-      { name: "Smug", data: smug },
-      { name: "Snooty", data: snooty },
-      { name: "Big Sister", data: bigSister },
-    ],
-    []
-  );
+
+  const personalityFilter = [
+    { name: "Cranky", data: cranky },
+    { name: "Jock", data: jock },
+    { name: "Lazy", data: lazy },
+    { name: "Normal", data: normal },
+    { name: "Peppy", data: peppy },
+    { name: "Smug", data: smug },
+    { name: "Snooty", data: snooty },
+    { name: "Big Sister", data: bigSister },
+  ];
 
   useEffect(() => {
     if (isLoading) {
@@ -123,7 +127,18 @@ function Home() {
 
     return validFavVillagers.some((fav) => fav.id === villager.id);
   }
-  // ? END Favorites
+
+  // ? Modal
+
+  function openModal(name) {
+    navigate(`/villager/${name}`, { state: { backgroundLocation: location } });
+  }
+
+  function closeModal() {
+    navigate("/");
+  }
+
+  // ? Filter villagers
 
   const getFilteredVillagers = useCallback(() => {
     if (filter === "fav") {
@@ -151,19 +166,34 @@ function Home() {
     setFilteredVillagers(getFilteredVillagers());
   }, [villagers, filter, favVillagers, getFilteredVillagers]);
 
-  function openModal(name) {
-    navigate(`/villager/${name}`, { state: { backgroundLocation: location } });
+  function Personality({ villager }) {
+    const personalityFilterItem = personalityFilter.find(
+      (pf) => pf.name.toLowerCase() === villager.personality.toLowerCase()
+    );
+    if (personalityFilterItem) {
+      return (
+        <img
+          src={personalityFilterItem.data}
+          alt="icon"
+          className="iconVillager"
+        />
+      );
+    }
   }
 
-  function closeModal() {
-    navigate("/");
-  }
+  // ? Loading villagers
 
   function loadingVillagers() {
     if (status === "loading") {
-      return <div className="text listBoard">Loading villagers...</div>;
+      return (
+        <ListBoard className="text listBoard">Loading villagers...</ListBoard>
+      );
     } else if (error) {
-      return <div className="text listBoard">Error fetching villagers.</div>;
+      return (
+        <ListBoard className="text listBoard">
+          Error fetching villagers.
+        </ListBoard>
+      );
     } else if (filteredVillagers && filteredVillagers.length > 0) {
       const indexOfLastVillager = currentPage * villagersPerPage;
       const indexOfFirstVillager = indexOfLastVillager - villagersPerPage;
@@ -174,48 +204,44 @@ function Home() {
 
       return (
         <>
-          <div className="listBoard">
+          <ListBoard className="listBoard">
             {currentVillagers.map((villager, id) => {
-              if (villager.nh_details) {
-                return (
-                  <VillagerCard key={id} className="villager">
-                    <VillagerImage
-                      src={villager.image_url}
-                      alt="image"
-                      className="imageVillager"
-                      onClick={() => openModal(villager.name)}
-                    />
-                    <p className="text">{villager.name}</p>
-                    <div className="iconsVillagers">
-                      <div className="iconDiv tooltip blue">
-                        <img
-                          src={villager.nh_details.icon_url}
-                          alt="icon"
-                          className="iconVillager"
-                        />
-                        <span className="tooltiptext">{villager.species}</span>
-                      </div>
-                      <div className="iconDiv green">
-                        <Personality villager={villager} />
-                      </div>
-                      <div className="iconDiv pink">
-                        <Heart
-                          className={`iconVillager favBtn ${
-                            isFav(villager) ? "filled" : ""
-                          }`}
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            addFav(villager);
-                          }}
-                        />
-                      </div>
-                    </div>
-                  </VillagerCard>
-                );
-              }
-              return null;
+              return (
+                <VillagerCard key={id} className="villager">
+                  <VillagerImage
+                    src={villager.image_url}
+                    alt="image"
+                    className="imageVillager"
+                    onClick={() => openModal(villager.name)}
+                  />
+                  <p className="text">{villager.name}</p>
+                  <div className="iconsVillagers">
+                    <IconDiv className="iconDiv tooltip blue">
+                      <img
+                        src={villager.nh_details.icon_url}
+                        alt="icon"
+                        className="iconVillager"
+                      />
+                      <span className="tooltiptext">{villager.species}</span>
+                    </IconDiv>
+                    <IconDiv className="iconDiv green">
+                      <Personality villager={villager} />
+                    </IconDiv>
+                    <IconDiv className="iconDiv pink">
+                      <Heart
+                        className={`iconVillager favBtn ${
+                          isFav(villager) ? "filled" : ""
+                        }`}
+                        onClick={() => {
+                          addFav(villager);
+                        }}
+                      />
+                    </IconDiv>
+                  </div>
+                </VillagerCard>
+              );
             })}
-          </div>
+          </ListBoard>
           {isModalOpen && (
             <VillagerInfo villager={selectedVillager} onClose={closeModal} />
           )}
@@ -229,21 +255,6 @@ function Home() {
       );
     } else {
       return <div className="text">No villagers found.</div>;
-    }
-  }
-
-  function Personality({ villager }) {
-    const personalityFilterItem = personalityFilter.find(
-      (pf) => pf.name.toLowerCase() === villager.personality.toLowerCase()
-    );
-    if (personalityFilterItem) {
-      return (
-        <img
-          src={personalityFilterItem.data}
-          alt="icon"
-          className="iconVillager"
-        />
-      );
     }
   }
 

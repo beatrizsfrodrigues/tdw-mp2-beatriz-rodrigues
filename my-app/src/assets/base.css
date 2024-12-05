@@ -57,16 +57,6 @@ ul {
   background-color: #f7a7b3;
 }
 
-.listBoard {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  align-items: center;
-  background-color: #f6f2e5;
-  padding: 48px;
-  border-radius: 100px;
-  gap: 32px;
-}
-
 .text {
   color: #4d3d35;
 }
@@ -97,15 +87,6 @@ ul {
 .iconVillager {
   width: 40px;
   height: auto;
-}
-
-.iconDiv {
-  width: 50px;
-  height: 50px;
-  border-radius: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 }
 
 .pink {

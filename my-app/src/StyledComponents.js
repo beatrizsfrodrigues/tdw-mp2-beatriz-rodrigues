@@ -34,3 +34,22 @@ export const VillagerImage = styled.img`
   background-repeat: no-repeat;
   background-size: 500px;
 `;
+
+export const ListBoard = styled.div`
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  align-items: center;
+  background-color: #f6f2e5;
+  padding: 48px;
+  border-radius: 100px;
+  gap: 32px;
+`;
+
+export const IconDiv = styled.div`
+  width: 50px;
+  height: 50px;
+  border-radius: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
