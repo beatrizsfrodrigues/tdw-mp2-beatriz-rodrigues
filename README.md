@@ -41,7 +41,7 @@ Para facilitar a navegação, foi implementada a funcionalidade de paginação, 
 
 ### **Estrutura do Projeto**
 
-O projeto foi organizado principalmente dentro do componente Home, com algumas funcionalidades executadas dentro de outros componentes.
+O projeto foi organizado principalmente dentro do componente Home, com algumas funcionalidades executadas dentro de outros componentes. 
 
 ### **Consumo da API**
 
@@ -77,37 +77,38 @@ export const nookipediaApi = createApi({
 });
 
 export const { useGetVillagersQuery } = nookipediaApi;
+
 ```
 
 ### **Filtros e Paginação**
 
-Os filtros foram implementados para facilitar a pesquisa por personalidade dos villagers. Já a paginação melhora a experiência do utilizador, limitando o número de resultados exibidos por página.
+Os filtros foram implementados para facilitar a pesquisa por personalidade dos villagers. Já a paginação melhora a experiência do utilizador, limitando o número de resultados exibidos por página. 
 
 ```jsx
 const getFilteredVillagers = useCallback(() => {
-  if (filter === "fav") {
-    return favVillagers;
-  } else if (filter === "All") {
-    return villagers;
-  } else {
-    const personalityFilterItem = personalityFilter.find(
-      (pf) => pf.name.toLowerCase() === filter.toLowerCase()
-    );
-    if (personalityFilterItem) {
-      return villagers.filter(
-        (villager) =>
-          villager.personality.toLowerCase() === filter.toLowerCase()
+    if (filter === "fav") {
+      return favVillagers;
+    } else if (filter === "All") {
+      return villagers;
+    } else {
+      const personalityFilterItem = personalityFilter.find(
+        (pf) => pf.name.toLowerCase() === filter.toLowerCase()
       );
+      if (personalityFilterItem) {
+        return villagers.filter(
+          (villager) =>
+            villager.personality.toLowerCase() === filter.toLowerCase()
+        );
+      }
     }
-  }
-  return villagers;
-}, [filter, favVillagers, villagers, personalityFilter]);
+    return villagers;
+  }, [filter, favVillagers, villagers, personalityFilter]);
 ```
 
 ```jsx
 for (let i = 1; i <= Math.ceil(totalVillagers / villagersPerPage); i++) {
-  pageNumbers.push(i);
-}
+    pageNumbers.push(i);
+  }
 ```
 
 ### **Favoritos**
@@ -116,8 +117,8 @@ Os favoritos são guardados no Local Storage, proporcionando persistência mesmo
 
 ```jsx
 useEffect(() => {
-  localStorage.setItem("favVillagers", JSON.stringify(favVillagers));
-}, [favVillagers]);
+    localStorage.setItem("favVillagers", JSON.stringify(favVillagers));
+  }, [favVillagers]);
 ```
 
 ### Pipeline
@@ -126,7 +127,7 @@ Configurei uma pipeline utilizando GitHub Actions. Esta pipeline automatiza tare
 
 ### **Estilização**
 
-A estilização foi realizada com CSS e e alguns Styled Components, permitindo uma personalização por componente e garantindo uma interface limpa e consistente. A utilização de Styled Components facilitou a manutenção do código e a aplicação de estilos específicos a cada componente.
+A estilização foi realizada com CSS e  e alguns Styled Components, permitindo uma personalização por componente e garantindo uma interface limpa e consistente. A utilização de Styled Components facilitou a manutenção do código e a aplicação de estilos específicos a cada componente.
 
 ```jsx
 export const FilterButton = styled.div`
@@ -144,11 +145,11 @@ export const FilterButton = styled.div`
 
 ### **Reducers**
 
-Inicialmente, toda a lógica da aplicação estava concentrada num único ficheiro, o que tornou o código desorganizado e difícil de gerir. Este problema tornou-se evidente quando comecei a implementar os reducers, pois a falta de separação entre as funcionalidades dificultava o trabalho e causou erros desnecessários que atrasaram o processo.
+Inicialmente, toda a lógica da aplicação estavaconcentrada num único ficheiro, o que tornou o código desorganizado e difícil de gerir. Este problema tornou-se evidente quando comecei a implementar os reducers, pois a falta de separação entre as funcionalidades dificultava o trabalho e causou erros desnecessários que atrasaram o processo.
 
 ### **Implementação da Paginação**
 
-A centralização inicial do código também causou dificuldades na implementação da funcionalidade de paginação. A estrutura rígida e pouco modular dificultava a integração de novos recursos, como o controlo do número de villagers exibidos por página.
+A centralização inicial do código também causou dificuldades na implementação da funcionalidade de paginação. A estrutura rígida e pouco modular dificultava a integração de novos recursos, como o controlo do número de villagers exibidos por página. 
 
 ### **Problemas de CORS**
 
@@ -178,3 +179,7 @@ Estas melhorias poderiam elevar significativamente o valor da aplicação, torna
 O desenvolvimento do Animal Crossing Villager Finder foi uma experiência enriquecedora, permitindo-me aplicar os conhecimentos adquiridos na UC de TDW. A aplicação atinge os objetivos definidos, proporcionando uma ferramenta prática e intuitiva para os fãs de Animal Crossing. Além disso, o projeto contribuiu para o meu desenvolvimento técnico, particularmente no consumo de APIs, gestão de estado e boas práticas em React.
 
 Estou satisfeita com o resultado final e acredito que a aplicação oferece uma experiência de utilizador agradável e funcional. Tentarei dar continuidade ao projeto, implementando funcionalidades que acredito terem valor para os potenciais utilizadores.
+
+## Mudanças depois da data original
+
+Alterei a forma como a aplicação obtém e apresenta a informação na modal de cada villager. Reestruturei parte do código, adicionando comentários para melhorar a legibilidade. Além disso, expandi a utilização de Styled Components, criando novos componentes. Por fim, adicionei uma imagem ao repositório com a arquitetura da aplicação.
