@@ -49,16 +49,19 @@ function Home() {
     isLoading,
   } = useGetVillagersQuery({ nhdetails: true });
 
-  const personalityFilter = [
-    { name: "Cranky", data: cranky },
-    { name: "Jock", data: jock },
-    { name: "Lazy", data: lazy },
-    { name: "Normal", data: normal },
-    { name: "Peppy", data: peppy },
-    { name: "Smug", data: smug },
-    { name: "Snooty", data: snooty },
-    { name: "Big Sister", data: bigSister },
-  ];
+  const personalityFilter = useMemo(
+    () => [
+      { name: "Cranky", data: cranky },
+      { name: "Jock", data: jock },
+      { name: "Lazy", data: lazy },
+      { name: "Normal", data: normal },
+      { name: "Peppy", data: peppy },
+      { name: "Smug", data: smug },
+      { name: "Snooty", data: snooty },
+      { name: "Big Sister", data: bigSister },
+    ],
+    []
+  );
 
   useEffect(() => {
     if (isLoading) {
